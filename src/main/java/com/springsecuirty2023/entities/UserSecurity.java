@@ -3,22 +3,22 @@ package com.springsecuirty2023.entities;
 import com.springsecuirty2023.entities.Enum.Role;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-@AllArgsConstructor
 @NoArgsConstructor
 public class UserSecurity implements UserDetails {
 
     private User user;
+
+    public UserSecurity(User user) {
+        this.user = user;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -69,6 +69,7 @@ public class UserSecurity implements UserDetails {
                 default -> roles.add(Role.OTHER);
             }
         });
+        System.out.println(roles);
         return roles;
     }
 }

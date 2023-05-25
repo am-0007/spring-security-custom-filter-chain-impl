@@ -6,26 +6,36 @@ import com.springsecuirty2023.entities.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
-@Mapper
+import java.util.UUID;
+
+@Mapper(componentModel = "spring")
 public interface UserMapper {
 
-    static final UserMapper USER_MAPPER_INSTANCE = Mappers.getMapper(UserMapper.class);
+    UserMapper USER_MAPPER_INSTANCE = Mappers.getMapper(UserMapper.class);
 
     default User toUser(UserDto userDto) {
-        return User.builder()
-                .role(userDto.getRole())
-                .username(userDto.getUsername())
-                .password(PasswordConfig.passwordEncoder().encode(userDto.getPassword()))
-                .build();
+        return new User(
+                generateUserId(),
+                userDto.getUsername(),
+                userDto.getRole()
+        );
     }
 
     default UserDto toUserDto(User user) {
-        return UserDto.builder()
-                .username(user.getUsername())
-                .role(user.getRole())
-                .build();
+        return new UserDto(
+                user.getUsername(),
+                user.getRole()
+        );
+    }
+
+    default String generateUserId() {
+        return "ss023-" + UUID.randomUUID().toString();
     }
 }

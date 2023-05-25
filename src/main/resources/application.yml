@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: spring_security
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/spring_security_023
+    username: postgres
+    password: 8956
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+logging:
+  level:
+    org:
+      springframework:
+        security: trace
+
+server:
+  port: 7999

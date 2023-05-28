@@ -29,6 +29,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 //	implementation 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 //	implementation 'org.mapstruct:mapstruct-jdk8:1.4.2.Final'
 //	implementation 'org.projectlombok:lombok-mapstruct-binding:0.2.0'

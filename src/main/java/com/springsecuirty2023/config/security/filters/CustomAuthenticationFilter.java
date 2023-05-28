@@ -1,3 +1,4 @@
+/*
 package com.springsecuirty2023.config.security.filters;
 
 import com.springsecuirty2023.config.security.authentication.CustomAuthentication;
@@ -41,3 +42,4 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
     }
 }
+*/

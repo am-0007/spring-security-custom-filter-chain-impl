@@ -1,3 +1,4 @@
+/*
 package com.springsecuirty2023.config.security.provider;
 
 import com.springsecuirty2023.config.security.authentication.CustomAuthentication;
@@ -30,3 +31,4 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         return CustomAuthentication.class.equals(authentication);
     }
 }
+*/

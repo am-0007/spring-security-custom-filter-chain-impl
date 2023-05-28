@@ -1,3 +1,4 @@
+/*
 package com.springsecuirty2023.config.security.authentication;
 
 import lombok.AllArgsConstructor;
@@ -16,16 +17,16 @@ public class CustomAuthentication implements Authentication {
 
 
     private final String secretKey;
-    private final boolean authentication;
+    private final boolean authenticated;
 
     @Override
     public boolean isAuthenticated() {
-        return false;
+        return authenticated;
     }
 
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-
+        this.authenticated = isAuthenticated;
     }
 
     @Override
@@ -53,3 +54,4 @@ public class CustomAuthentication implements Authentication {
         return null;
     }
 }
+*/

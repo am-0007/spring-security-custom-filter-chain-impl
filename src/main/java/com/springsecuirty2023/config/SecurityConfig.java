@@ -1,6 +1,6 @@
 package com.springsecuirty2023.config;
 
-import com.springsecuirty2023.config.security.filters.CustomAuthenticationFilter;
+//import com.springsecuirty2023.config.security.filters.CustomAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,21 +13,27 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @AllArgsConstructor
 public class SecurityConfig {
 
-    private final CustomAuthenticationFilter customAuthenticationFilter;
+//    private final CustomAuthenticationFilter customAuthenticationFilter;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf().disable()
                 //Add filter where username and password is checked
-                .addFilterAt(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                //.addFilterAt(customAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(
                         authorize ->
-                                authorize.requestMatchers("/ss023/user/register")
+                                authorize.requestMatchers("/ss023/user/register",
+                                                "/css/**",
+                                                "/register"
+                                        )
                                         .permitAll()
                                         .anyRequest()
                                         .authenticated()
                 )
-                .formLogin(Customizer.withDefaults())
+                .formLogin(
+                        form -> form.loginPage("/login")
+                                .permitAll()
+                )
                 .build();
     }
 

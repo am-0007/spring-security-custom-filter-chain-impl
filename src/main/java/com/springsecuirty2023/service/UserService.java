@@ -32,14 +32,15 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public UserDto registerUser(UserDto userDto) {
+    public Boolean registerUser(UserDto userDto) {
         return Optional.of(userDto)
                 .map(UserMapper.USER_MAPPER_INSTANCE::toUser)
                 .map(user -> {
                     user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-                    return userRepository.save(user);
+                    userRepository.save(user);
+                    return userRepository.findByUsername(userDto.getUsername()).isPresent();
                 })
-                .map(UserMapper.USER_MAPPER_INSTANCE::toUserDto)
+                //.map(UserMapper.USER_MAPPER_INSTANCE::toUserDto)
                 .orElseThrow(() -> new RuntimeException("Username already exists!!"));
     }
 }

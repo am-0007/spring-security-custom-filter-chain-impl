@@ -1,4 +1,3 @@
-/*
 package com.springsecuirty2023.config.security.manager;
 
 import com.springsecuirty2023.config.security.provider.CustomAuthenticationProvider;
@@ -23,4 +22,3 @@ public class CustomAuthenticationManager implements AuthenticationManager {
         throw new BadCredentialsException("Username or password incorrect!!");
     }
 }
-*/

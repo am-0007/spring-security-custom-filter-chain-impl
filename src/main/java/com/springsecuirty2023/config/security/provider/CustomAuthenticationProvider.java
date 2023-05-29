@@ -1,27 +1,34 @@
-/*
 package com.springsecuirty2023.config.security.provider;
 
 import com.springsecuirty2023.config.security.authentication.CustomAuthentication;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
-    @Value("${security.secretKey}")
-    private String key;
+    private final UserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         CustomAuthentication customAuthentication = (CustomAuthentication) authentication;
-        String headerKey = customAuthentication.getSecretKey();
+        String username = (String) customAuthentication.getPrincipal();
+        String password = customAuthentication.getCredential();
 
-        if (key.equals(headerKey)) {
-            return new CustomAuthentication(null, true);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        if (userDetails.getUsername().equals(username)
+                && passwordEncoder.matches(password, userDetails.getPassword())) {
+            return new CustomAuthentication(username, password, true);
         }
         throw new BadCredentialsException("Username or password incorrect!!");
     }
@@ -31,4 +38,3 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         return CustomAuthentication.class.equals(authentication);
     }
 }
-*/

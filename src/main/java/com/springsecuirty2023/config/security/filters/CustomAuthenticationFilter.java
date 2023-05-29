@@ -1,4 +1,3 @@
-/*
 package com.springsecuirty2023.config.security.filters;
 
 import com.springsecuirty2023.config.security.authentication.CustomAuthentication;
@@ -8,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -19,6 +19,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
     private final CustomAuthenticationManager customAuthenticationManager;
 
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -29,8 +30,9 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
         // 3. get authentication from manager as a response
         // 4. Once authenticated then send request to the next filter chain
 
-        String key = String.valueOf(request.getHeader("key"));
-        CustomAuthentication customAuthentication = new CustomAuthentication(key, false);
+        String username = String.valueOf(request.getHeader("username"));
+        String password = String.valueOf(request.getHeader("password"));
+        CustomAuthentication customAuthentication = new CustomAuthentication(username, password);
         var userAuthentication = customAuthenticationManager.authenticate(customAuthentication);
 
         if (userAuthentication.isAuthenticated()) {
@@ -42,4 +44,3 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
     }
 }
-*/

@@ -1,4 +1,3 @@
-/*
 package com.springsecuirty2023.config.security.authentication;
 
 import lombok.AllArgsConstructor;
@@ -6,6 +5,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -15,9 +15,22 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public class CustomAuthentication implements Authentication {
 
+    private String principal;
+    private String Credential;
+    private Boolean authenticated = false;
 
-    private final String secretKey;
-    private final boolean authenticated;
+    public CustomAuthentication(String principal, String credential) {
+        this.principal = principal;
+        Credential = credential;
+    }
+
+    public CustomAuthentication(String principal,
+                                String credential,
+                                Boolean authenticated) {
+        this.principal = principal;
+        Credential = credential;
+        this.authenticated = authenticated;
+    }
 
     @Override
     public boolean isAuthenticated() {
@@ -36,7 +49,7 @@ public class CustomAuthentication implements Authentication {
 
     @Override
     public Object getCredentials() {
-        return null;
+        return getCredential();
     }
 
     @Override
@@ -46,7 +59,7 @@ public class CustomAuthentication implements Authentication {
 
     @Override
     public Object getPrincipal() {
-        return null;
+        return principal;
     }
 
     @Override
@@ -54,4 +67,3 @@ public class CustomAuthentication implements Authentication {
         return null;
     }
 }
-*/

@@ -8,8 +8,12 @@
 <body>
     <div class="container">
         <h2>Login</h2>
-        <form th:object="${login}" th:method="GET" th:action="@{/home}">
-            <div class="form-group">
+        <form th:object="${login}" th:method="POST" th:action="@/login">
+            <div th:if="${param.error}">
+                Invalid username and password.</div>
+            <div th:if="${param.logout}">
+                You have been logged out.</div>
+            <div class="form-group" >
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
             </div>
@@ -20,11 +24,11 @@
             <button type="submit">Log In</button>
             <h5>
                 Not registered yet!!
-                <a th:href="@{/register}">click here</a>
+                <a>click here</a>
             </h5>
         </form>
     </div>
 </body>
 </html>
 
-<!--th:object="${login}" th:method="GET" th:action="@/login" th:href="@/register"-->
+<!--th:object="${login}" th:method="POST" th:action="@/home" th:href="@/register"-->

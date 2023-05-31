@@ -41,12 +41,12 @@ public class SecurityConfig {
                                         .anyRequest()
                                         .authenticated()
                 )
-//                .formLogin(Customizer.withDefaults())
+                //.formLogin(Customizer.withDefaults())
                 .formLogin(
                         form -> form.loginPage("/login")
                                 .permitAll()
                 )
-                .addFilterBefore(new CustomAuthenticationFilter(customAuthenticationManager), UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new CustomAuthenticationFilter(customAuthenticationManager), UsernamePasswordAuthenticationFilter.class)
 //                .addFilterAt(new CustomAuthentication2Filter(), CustomAuthenticationFilter.class)
                 .build();
     }

@@ -1,3 +1,4 @@
+/*
 package com.springsecuirty2023.controller;
 
 import com.springsecuirty2023.entities.User;
@@ -28,3 +29,4 @@ public class UserController {
         return null;
     }
 }
+*/

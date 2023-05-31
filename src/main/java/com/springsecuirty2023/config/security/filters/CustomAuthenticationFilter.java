@@ -1,7 +1,9 @@
 package com.springsecuirty2023.config.security.filters;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springsecuirty2023.config.security.authentication.CustomAuthentication;
 import com.springsecuirty2023.config.security.manager.CustomAuthenticationManager;
+import com.springsecuirty2023.entities.login.Login;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,12 +16,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.stream.Collectors;
 
+/*
 @Component
 @AllArgsConstructor
 public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
     private final CustomAuthenticationManager customAuthenticationManager;
+*/
 
 
     /*@Override
@@ -58,6 +63,7 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
 
     }*/
 
+/*
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -67,13 +73,26 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
         String username = request.getHeader("username");
         String password = request.getHeader("password");
 
-        if (username.equals("null")
-                || password.equals("null")
-                || username.isBlank()
-                || password.isBlank()
-                || password == null
-                || username == null) {
-            redirectToLoginPage(response);
+        */
+/*String requestBody = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+
+        // Deserialize the request body to a Login object using a JSON library (e.g., Jackson)
+        ObjectMapper objectMapper = new ObjectMapper();
+        Login login = objectMapper.readValue(requestBody, Login.class);
+
+        String username = login.getUsername();
+        String password = login.getPassword();*//*
+
+
+
+        */
+/*String username = null;
+        String password = null;*//*
+
+
+        if ( username == null ||
+                password == null) {
+            redirectToLoginPage(request, response);
             return;
         }
 
@@ -88,16 +107,25 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
             } else {
                 // Authentication failed
-                redirectToLoginPage(response);
+                redirectToLoginPage(request, response);
             }
         } catch (AuthenticationException e) {
             // Authentication exception occurred
-            redirectToLoginPage(response);
+            redirectToLoginPage(request, response);
         }
     }
 
-    private void redirectToLoginPage(HttpServletResponse response) throws IOException {
+    */
+/*private void redirectToLoginPage(HttpServletResponse response) throws IOException {
         response.sendRedirect("/login");
+    }*//*
+
+    private void redirectToLoginPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String loginUrl = request.getContextPath() + "/login";
+        System.out.println(loginUrl);
+        response.sendRedirect(loginUrl);
     }
 
+
 }
+*/

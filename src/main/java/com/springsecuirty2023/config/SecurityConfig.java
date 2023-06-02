@@ -5,7 +5,9 @@ package com.springsecuirty2023.config;
 //import com.springsecuirty2023.config.security.filters.CustomAuthenticationFilter;
 //import com.springsecuirty2023.config.security.manager.CustomAuthenticationManager;
 //import com.springsecuirty2023.config.security.filters.CustomAuthentication2Filter;
-import com.springsecuirty2023.config.security.filters.CustomAuthenticationFilter;
+import com.springsecuirty2023.config.security.filters.CustomUsernamePasswordAuthenticationFilter;
+import com.springsecuirty2023.config.security.filters.JwtAuthenticationFilter;
+import com.springsecuirty2023.config.security.jwt.JwtTokenService;
 import com.springsecuirty2023.config.security.manager.CustomAuthenticationManager;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -31,6 +33,8 @@ public class SecurityConfig {
                 //Add filter where username and password is checked
                 //.authenticationEntryPoint(authenticationEntryPoint)
                 //.and()
+                .addFilter(new CustomUsernamePasswordAuthenticationFilter(customAuthenticationManager, new JwtTokenService()))
+                //.addFilterAfter(new JwtAuthenticationFilter(customAuthenticationManager), CustomUsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(
                         authorize ->
                                 authorize.requestMatchers("/ss023/user/register",
@@ -41,12 +45,12 @@ public class SecurityConfig {
                                         .anyRequest()
                                         .authenticated()
                 )
-                //.formLogin(Customizer.withDefaults())
-                .formLogin(
+                .formLogin(Customizer.withDefaults())
+                /*.formLogin(
                         form -> form.loginPage("/login")
                                 .permitAll()
-                )
-                .addFilterAfter(new CustomAuthenticationFilter(customAuthenticationManager), UsernamePasswordAuthenticationFilter.class)
+                )*/
+                //.addFilterAfter(new CustomAuthenticationFilter(customAuthenticationManager), UsernamePasswordAuthenticationFilter.class)
 //                .addFilterAt(new CustomAuthentication2Filter(), CustomAuthenticationFilter.class)
                 .build();
     }

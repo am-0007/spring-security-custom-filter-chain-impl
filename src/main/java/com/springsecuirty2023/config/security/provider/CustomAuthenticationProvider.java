@@ -4,6 +4,7 @@ import com.springsecuirty2023.config.security.authentication.CustomAuthenticatio
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
@@ -38,6 +39,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Override
     public boolean supports(Class<?> authentication) {
-        return CustomAuthentication.class.equals(authentication);
+        return UsernamePasswordAuthenticationToken.class.equals(authentication);
     }
 }

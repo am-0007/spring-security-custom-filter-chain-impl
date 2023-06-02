@@ -21,4 +21,5 @@ server:
   port: 7999
 
 security:
-  secretKey: "sdjkfhjas1283./asd-129234][sa'"
+  secretKey: "sdjkfhjas1283./asd-129234][sa"
+  expiresIn: 10000

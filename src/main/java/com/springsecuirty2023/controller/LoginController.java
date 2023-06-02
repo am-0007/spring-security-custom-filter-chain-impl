@@ -36,7 +36,7 @@ public class LoginController {
         return "home";
     }*/
 
-    @PostMapping("/login")
+    /*@PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Login login) {
         Authentication authentication = customAuthenticationManager.authenticate(
                 new CustomAuthentication(
@@ -46,6 +46,5 @@ public class LoginController {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-
-    }
+    }*/
 }

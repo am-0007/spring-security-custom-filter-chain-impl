@@ -17,7 +17,16 @@ public class CustomAuthentication implements Authentication {
 
     private String principal;
     private String Credential;
+    private Collection<GrantedAuthority> authorities;
     private Boolean authenticated = false;
+
+    public CustomAuthentication(String principal,
+                                String credential,
+                                Collection<GrantedAuthority> authorities) {
+        this.principal = principal;
+        Credential = credential;
+        this.authorities = authorities;
+    }
 
     public CustomAuthentication(String principal, String credential) {
         this.principal = principal;
@@ -44,7 +53,7 @@ public class CustomAuthentication implements Authentication {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return this.authorities;
     }
 
     @Override

@@ -4,22 +4,27 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Date;
 
-@Configuration
+@Component
+@Data
+@ConfigurationProperties(prefix = "security")
 public class JwtTokenService {
 
-    @Value("${security.secretKey}")
-    private String secretKey;
+//    @Value("sadkfhsahiuqwerlkjsadflkh")
+    private String secretKey = "asldk;fjl0131/asdfj1aeqzp2";
 
-    @Value("${security.expiresIn}")
-    private int expiresIn;
+//    @Value("1000")
+    private int expiresIn = 1000;
 
     private final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
 

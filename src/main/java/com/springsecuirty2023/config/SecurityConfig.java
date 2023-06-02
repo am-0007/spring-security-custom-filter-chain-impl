@@ -39,7 +39,8 @@ public class SecurityConfig {
                         authorize ->
                                 authorize.requestMatchers("/ss023/user/register",
                                                 "/css/**",
-                                                "/register"
+                                                "/register",
+                                                "/login"
                                         )
                                         .permitAll()
                                         .anyRequest()

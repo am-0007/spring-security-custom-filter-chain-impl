@@ -13,26 +13,29 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Component
 @AllArgsConstructor
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
-    private final UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailService;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        CustomAuthentication customAuthentication = (CustomAuthentication) authentication;
+        UsernamePasswordAuthenticationToken customAuthentication = (UsernamePasswordAuthenticationToken) authentication;
         String username = (String) customAuthentication.getPrincipal();
-        String password = customAuthentication.getCredential();
+        String password = (String) customAuthentication.getCredentials();
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        UserDetails userDetails = userDetailService.loadUserByUsername(username);
+        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+        System.out.println(authorities);
 
         if (userDetails.getUsername().equals(username)
                 && passwordEncoder.matches(password, userDetails.getPassword())) {
-            return new CustomAuthentication(username, password, true);
+            return new UsernamePasswordAuthenticationToken(username, password, authorities);
         }
         throw new BadCredentialsException("Username or password incorrect!!");
     }

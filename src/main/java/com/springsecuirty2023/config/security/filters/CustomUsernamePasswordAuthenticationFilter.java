@@ -1,19 +1,17 @@
 package com.springsecuirty2023.config.security.filters;
 
-import com.auth0.jwt.JWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.springsecuirty2023.config.security.authentication.CustomAuthentication;
 import com.springsecuirty2023.config.security.jwt.JwtProperties;
 import com.springsecuirty2023.config.security.jwt.JwtTokenService;
 import com.springsecuirty2023.config.security.manager.CustomAuthenticationManager;
 import com.springsecuirty2023.entities.login.Login;
-import com.sun.security.auth.UserPrincipal;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -21,20 +19,37 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.nio.file.attribute.UserPrincipal;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 
 @Component
-@RequiredArgsConstructor
 public class CustomUsernamePasswordAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final CustomAuthenticationManager authenticationManager;
     private final JwtTokenService jwtTokenService;
 
+    /*public CustomUsernamePasswordAuthenticationFilter(CustomAuthenticationManager authenticationManager, JwtTokenService jwtTokenService) {
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenService = jwtTokenService;
+    }*/
+
+    public CustomUsernamePasswordAuthenticationFilter(CustomAuthenticationManager authenticationManager1, JwtTokenService jwtTokenService) {
+        super(authenticationManager1);
+        this.authenticationManager = authenticationManager1;
+        this.jwtTokenService = jwtTokenService;
+    }
+
+
+/*    public CustomUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager) {
+        super.setAuthenticationManager(authenticationManager);
+    }*/
+
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        Login loginUser = null;
+        Login loginUser;
         try {
             loginUser = new ObjectMapper().readValue(request.getInputStream(), Login.class);
         } catch (IOException e) {
@@ -42,7 +57,7 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
         }
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                loginUser.getPassword(),
+                loginUser.getUsername(),
                 loginUser.getPassword(),
                 new ArrayList<>()
         );
@@ -56,12 +71,12 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
                                             FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
 
-        UserPrincipal principal = (UserPrincipal) authResult.getPrincipal();
+        String principal = (String) authResult.getPrincipal();
         String token = null;
 
         // Create Jwt token
         try {
-            token = jwtTokenService.generateToken(principal.getName());
+            token = jwtTokenService.generateToken(principal);
         } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }

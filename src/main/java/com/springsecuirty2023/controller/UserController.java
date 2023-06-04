@@ -22,9 +22,16 @@ public class UserController {
         return new ResponseEntity<>("String", HttpStatus.OK);
     }
 
+    @GetMapping("/getString2")
+    public ResponseEntity<String> getStringTwo(){
+        return new ResponseEntity<>("String2", HttpStatus.OK);
+    }
+
     @PostMapping("/register")
-    public ResponseEntity<UserDto> registerUser(@RequestBody UserDto userDto) {
-        //return new ResponseEntity<>(userService.registerUser(userDto), HttpStatus.OK);
-        return null;
+    public ResponseEntity<?> registerUser(@RequestBody UserDto userDto) {
+        if (userService.registerUser(userDto)) {
+            return new ResponseEntity<>("User registered Successfully", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("User registration failed!", HttpStatus.NOT_ACCEPTABLE);
     }
 }

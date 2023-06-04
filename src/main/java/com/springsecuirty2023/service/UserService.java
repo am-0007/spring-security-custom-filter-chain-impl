@@ -40,7 +40,6 @@ public class UserService implements UserDetailsService {
                     userRepository.save(user);
                     return userRepository.findByUsername(userDto.getUsername()).isPresent();
                 })
-                //.map(UserMapper.USER_MAPPER_INSTANCE::toUserDto)
                 .orElseThrow(() -> new RuntimeException("Username already exists!!"));
     }
 }

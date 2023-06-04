@@ -9,19 +9,14 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.nio.file.attribute.UserPrincipal;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
@@ -35,22 +30,11 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
     private final CustomAuthenticationManager authenticationManager;
     private final JwtTokenService jwtTokenService;
 
-    /*public CustomUsernamePasswordAuthenticationFilter(CustomAuthenticationManager authenticationManager, JwtTokenService jwtTokenService) {
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenService = jwtTokenService;
-    }*/
-
     public CustomUsernamePasswordAuthenticationFilter(CustomAuthenticationManager authenticationManager1, JwtTokenService jwtTokenService) {
         super(authenticationManager1);
         this.authenticationManager = authenticationManager1;
         this.jwtTokenService = jwtTokenService;
     }
-
-
-/*    public CustomUsernamePasswordAuthenticationFilter(AuthenticationManager authenticationManager) {
-        super.setAuthenticationManager(authenticationManager);
-    }*/
-
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -88,10 +72,15 @@ public class CustomUsernamePasswordAuthenticationFilter extends UsernamePassword
         } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+        // Add Bearer token in authorization header
         response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + token);
 
+        // Send access token as response
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write("access_token : " + accessToken.get("access_token"));
+        response.getWriter().write("{ \n \"access_token\" : "
+                + "\"" + accessToken.get("access_token") + "\""
+                + "\n}"
+        );
     }
 }

@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,13 +19,11 @@ import java.util.List;
 
 @Component
 @Data
-@ConfigurationProperties(prefix = "security")
 public class JwtTokenService {
 
-//    @Value("sadkfhsahiuqwerlkjsadflkh")
-    private String secretKey = "asldk;fjl0131/asdfj1aeqzp2";
 
-//    @Value("1000")
+    private String secretKey = "sdjkfhjas1283./asd-129234][sa";
+
     private int expiresIn = 1000;
 
     private UserDetails userDetails;

@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -24,6 +25,7 @@ public class SecurityConfig {
     private final CustomAuthenticationManager customAuthenticationManager;
 //    private final UserDetailsService userDetailsService;
 //    private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final UserDetailsService userDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -34,7 +36,7 @@ public class SecurityConfig {
                 //.authenticationEntryPoint(authenticationEntryPoint)
                 //.and()
                 .addFilter(new CustomUsernamePasswordAuthenticationFilter(customAuthenticationManager, new JwtTokenService()))
-                //.addFilterAfter(new JwtAuthenticationFilter(customAuthenticationManager), CustomUsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new JwtAuthenticationFilter(new JwtTokenService(), userDetailsService), CustomUsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(
                         authorize ->
                                 authorize.requestMatchers("/ss023/user/register",

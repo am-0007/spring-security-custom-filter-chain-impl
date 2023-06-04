@@ -5,15 +5,16 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Component
 @Data
@@ -25,6 +26,8 @@ public class JwtTokenService {
 
 //    @Value("1000")
     private int expiresIn = 1000;
+
+    private UserDetails userDetails;
 
     private final SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
 
@@ -52,13 +55,18 @@ public class JwtTokenService {
         }
         return username;
     }
-    public String generateToken(String username) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public String generateToken(String username, Collection<? extends GrantedAuthority> authorities) throws InvalidKeySpecException, NoSuchAlgorithmException {
+
+        List<String> authority = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList();
 
         return Jwts.builder()
                 /*.setIssuer( appName )*/
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(generateExpirationDate())
+                .claim("Roles", authority)
                 .signWith(SIGNATURE_ALGORITHM, secretKey )
                 .compact();
     }

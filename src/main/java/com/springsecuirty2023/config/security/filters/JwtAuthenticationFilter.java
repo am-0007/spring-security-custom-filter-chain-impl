@@ -37,11 +37,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
     }
-
-/*
-    @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        return super.attemptAuthentication(request, response);
-    }
-*/
 }
